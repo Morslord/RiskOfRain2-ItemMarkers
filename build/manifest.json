@@ -1,0 +1,8 @@
+{
+  "name": "ItemMarkers",
+  "author": "morslord",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/Morslord/RiskOfRain2-ItemMarkers",
+  "description": "Client-side item and Command essence markers with tier filters, distance labels and optional Risk of Options settings. By Morslord.",
+  "dependencies": ["bbepis-BepInExPack-5.4.2122"]
+}

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>ItemMarkers</AssemblyName>
+    <RootNamespace>ItemMarkers</RootNamespace>
+    <ManagedDir>$(GameDir)/Risk of Rain 2_Data/Managed</ManagedDir>
+    <BepInExCoreDir Condition="'$(BepInExCoreDir)' == ''">$(ProfileDir)/BepInEx/core</BepInExCoreDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Core is compiled into the plugin; tool and check programs are separate executables. -->
+    <Compile Remove="tools/**/*.cs;tests/**/*.cs" />
+    <Reference Include="BepInEx"><HintPath>$(BepInExCoreDir)/BepInEx.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="RoR2"><HintPath>$(ManagedDir)/RoR2.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine"><HintPath>$(ManagedDir)/UnityEngine.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(ManagedDir)/UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.ImageConversionModule"><HintPath>$(ManagedDir)/UnityEngine.ImageConversionModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.UIModule"><HintPath>$(ManagedDir)/UnityEngine.UIModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.UI"><HintPath>$(ManagedDir)/UnityEngine.UI.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Unity.TextMeshPro"><HintPath>$(ManagedDir)/Unity.TextMeshPro.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Unity.Addressables"><HintPath>$(ManagedDir)/Unity.Addressables.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Unity.ResourceManager"><HintPath>$(ManagedDir)/Unity.ResourceManager.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="com.unity.multiplayer-hlapi.Runtime"><HintPath>$(ManagedDir)/com.unity.multiplayer-hlapi.Runtime.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="../build/icon.png" LogicalName="ItemMarkers.Resources.ModIcon.png" />
+  </ItemGroup>
+  <Target Name="ValidateLocalReferences" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(ManagedDir)/RoR2.dll')" Text="Set GameDir to your Risk of Rain 2 installation." />
+    <Error Condition="!Exists('$(BepInExCoreDir)/BepInEx.dll')" Text="Set ProfileDir to your own BepInEx-enabled test profile." />
+  </Target>
+  <Target Name="CopyReleasePlugin" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <MakeDir Directories="$(MSBuildProjectDirectory)/../build" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildProjectDirectory)/../build" SkipUnchangedFiles="true" />
+  </Target>
+</Project>
